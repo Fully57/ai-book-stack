@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Validation Chapitre</title>
+</head>
+<body>
+  <h1>Validation de chapitre</h1>
+  <div id="content">Chargement…</div>
+  <textarea id="prompt" placeholder="Commentaires"></textarea><br>
+  <button onclick="valider()">Valider</button>
+  <button onclick="regen()">Régénérer</button>
+  <script>
+    async function load() {
+      const r = await fetch('/api/chapitre/1');
+      document.getElementById('content').innerText = await r.text();
+    }
+    async function valider() {
+      await fetch('/api/chapitre/1/valider', { method: 'POST' });
+      alert('Validé');
+    }
+    async function regen() {
+      const p = document.getElementById('prompt').value;
+      await fetch('/api/chapitre/1/regenerer', {
+        method: 'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ prompt:p })
+      });
+      alert('Relancé');
+    }
+    load();
+  </script>
+</body>
+</html>
